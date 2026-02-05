@@ -1044,6 +1044,26 @@
     function getAnswer() {
         const question = questionInput.value.trim();
 
+        // 如果已经翻页且按钮文字是“确定”，则反向翻页回到封面
+        if (isFlipped && askBtn.textContent === '确定') {
+            // 移除翻页类，反向翻页
+            bookContainer.classList.remove('flipping');
+
+            // 立即切换按钮文字
+            askBtn.textContent = '获取答案';
+
+            // 等待翻页回封面的动画结束
+            setTimeout(() => {
+                // 清除之前的答案
+                answerPageContent.textContent = '';
+                isFlipped = false;
+
+                // 恢复按钮状态
+                askBtn.disabled = false;
+            }, 2500); // 等待翻页回封面的动画结束
+            return;
+        }
+
         if (!question) {
             shakeMagicBook();
             return;
@@ -1075,7 +1095,7 @@
                 // 翻页完成后恢复按钮状态
                 setTimeout(() => {
                     askBtn.disabled = false;
-                    askBtn.textContent = '获取答案';
+                    askBtn.textContent = '确定';
                 }, 2500); // 等待翻页动画完成
             }, 2500); // 等待翻页回封面的动画结束
         } else {
@@ -1091,7 +1111,7 @@
             // 翻页完成后恢复按钮状态
             setTimeout(() => {
                 askBtn.disabled = false;
-                askBtn.textContent = '获取答案';
+                askBtn.textContent = '确定';
             }, 2500); // 等待翻页动画完成
         }
     }
